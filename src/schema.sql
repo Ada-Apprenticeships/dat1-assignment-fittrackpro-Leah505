@@ -20,7 +20,7 @@ CREATE TABLE locations (
     location_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     address TEXT NOT NULL,
-    phone_number TEXT NOT NULL,
+    phone_number TEXT NOT NULL CHECK (phone_number GLOB '[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'),
     email TEXT UNIQUE NOT NULL,
     opening_hours TEXT NOT NULL
 );
@@ -31,7 +31,7 @@ CREATE TABLE members (
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
-    phone_number TEXT NOT NULL,
+    phone_number TEXT NOT NULL CHECK (phone_number GLOB '[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'),
     date_of_birth DATE NOT NULL,
     join_date DATE NOT NULL,
     emergency_contact_name TEXT NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE staff (
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
-    phone_number TEXT NOT NULL,
+    phone_number TEXT NOT NULL CHECK (phone_number GLOB '[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'),
     position TEXT CHECK(position IN ('Trainer', 'Manager', 'Receptionist', 'Maintenance')) NOT NULL,
     hire_date DATE NOT NULL,
     location_id INTEGER,
