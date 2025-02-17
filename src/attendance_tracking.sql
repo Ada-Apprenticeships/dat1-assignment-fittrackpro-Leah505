@@ -40,8 +40,7 @@ LIMIT 1;
 -- 6.4. Calculate the average daily attendance for each location
 SELECT 
     l.name AS location_name, 
-    ROUND(COUNT(a.attendance_id) * 1.0 / COUNT(DISTINCT DATE(a.check_in_time)), 2) AS avg_daily_attendance
-FROM attendance a
-JOIN locations l ON a.location_id = l.location_id
-GROUP BY l.location_id
-ORDER BY avg_daily_attendance DESC;
+    ROUND(COUNT(a.attendance_id) * 1.0 / (JULIANDAY('now') - JULIANDAY(MIN(a.check_in_time)) + 1), 2) AS avg_daily_attendance
+FROM locations l
+LEFT JOIN attendance a ON l.location_id = a.location_id
+GROUP BY l.location_id;

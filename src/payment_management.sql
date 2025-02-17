@@ -15,12 +15,13 @@ VALUES (11, 50.00, CURRENT_TIMESTAMP, 'Credit Card', 'Monthly membership fee');
 
 -- 2.2. Calculate total revenue from membership fees for each month of the last year
 SELECT 
-    strftime('%Y-%m', payment_date) AS month, -- Format the date as YYYY-MM
+    strftime('%Y-%m', DATE(payment_date)) AS month, -- Format the date as YYYY-MM
     SUM(amount) AS total_revenue
 FROM payments
 WHERE payment_type = 'Monthly membership fee'
-    AND payment_date >= DATE('now', '-1 year') -- Filter for the last year
-GROUP BY strftime('%Y-%m', payment_date)
+    AND payment_date >= DATE('now', 'start of month', '-12 months') -- Filter for the last year
+    AND payment_date < DATE('now', 'start of month')
+GROUP BY strftime('%Y-%m', DATE(payment_date))
 ORDER BY month;
 
 -- 2.3. Find all day pass purchases

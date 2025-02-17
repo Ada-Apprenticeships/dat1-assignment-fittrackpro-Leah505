@@ -9,7 +9,7 @@ PRAGMA foreign_keys = ON;
 
 -- 4.1. List all classes with their instructors
 SELECT 
-    c.class_id, 
+    DISTINCT c.class_id, 
     c.name AS class_name, 
     s.first_name || ' ' || s.last_name AS instructor_name
 FROM classes c
