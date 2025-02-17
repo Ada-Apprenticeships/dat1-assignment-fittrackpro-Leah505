@@ -22,7 +22,7 @@ CREATE TABLE locations (
     address TEXT NOT NULL,
     phone_number TEXT NOT NULL CHECK (phone_number GLOB '[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'),
     email TEXT UNIQUE NOT NULL CHECK(email LIKE '%@%.%'),
-    opening_hours TEXT NOT NULL
+    opening_hours TEXT NOT NULL CHECK(opening_hours GLOB '[0-9]:[0-5][0-9]-[0-2][0-9]:[0-5][0-9]')
 );
 
 -- Create members table
@@ -80,7 +80,7 @@ CREATE TABLE class_schedule (
     class_id INTEGER NOT NULL,
     staff_id INTEGER,
     start_time TEXT NOT NULL CHECK(start_time GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]'),
-    end_time TEXT NOT NULL CHECK(end_time_time GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]'),
+    end_time TEXT NOT NULL CHECK(end_time GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]'),
     FOREIGN KEY (class_id) REFERENCES classes(class_id) ON DELETE CASCADE,
     FOREIGN KEY (staff_id) REFERENCES staff(staff_id) ON DELETE SET NULL
 );
@@ -122,7 +122,7 @@ CREATE TABLE payments (
     payment_id INTEGER PRIMARY KEY AUTOINCREMENT,
     member_id INTEGER NOT NULL,
     amount REAL NOT NULL CHECK(amount > 0),
-    payment_date TEXT NOT NULL DEFAULT (DATETIME('now')) CHECK(payment_date GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]'),
+    payment_date TEXT NOT NULL DEFAULT (DATETIME('now')) CHECK(payment_date GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]'),
     payment_method TEXT CHECK(payment_method IN ('Credit Card', 'Bank Transfer', 'PayPal', 'Cash')) NOT NULL,
     payment_type TEXT CHECK(payment_type IN ('Monthly membership fee', 'Day pass')) NOT NULL,
     FOREIGN KEY (member_id) REFERENCES members(member_id) ON DELETE CASCADE
